@@ -1,0 +1,24 @@
+INSTRUCTIONS
+
+W- Move Forward
+A- Move Left
+S- Move Back
+D- Move Right
+				
+E- Move Up
+F- Move Down
+				
+R- Zoom In
+G- Zoom Out
+				
+I- Look Up
+K- Look Down
+L- Look Right
+J- Look Left
+				
+Q- Invert Objects
+B- Show Triangles
+		
+M- Exit Program
+
+PRESS ANY KEY TO RETURN
