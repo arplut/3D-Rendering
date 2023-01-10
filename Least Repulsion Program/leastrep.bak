@@ -1,0 +1,206 @@
+#include<iostream.h>
+#include<math.h>
+#include<conio.h>
+#include<process.h>
+#define pi 3.14159
+struct cord
+{
+	float x; float y; float z;
+   float ha; float va;
+};
+
+float anglecalc(cord lA, cord lB)
+{
+	float magA, magB;
+	magA=lA.x*lA.x+lA.y*lA.y+lA.z*lA.z;
+	magA=sqrt(magA);
+	magB=lB.x*lB.x+lB.y*lB.y+lB.z*lB.z;
+	magB=sqrt(magB);
+
+	float thetha;
+	thetha=lA.x*lB.x+lA.y*lB.y+lA.z*lB.z;
+	thetha=thetha/(magA*magB);
+	thetha=acos(thetha);
+
+	if (thetha<0)
+   	thetha=-thetha;
+	return thetha;
+}
+
+void cordcalc(float ha, float va, cord &l)
+{
+	cord ppos;
+	float h, planedist;
+	h=sin(va)*1;
+	planedist=cos(va)*1;
+	l.x=planedist*cos(ha);
+	l.y=planedist*sin(ha);
+	l.z=h;
+}
+
+float sumofangles(int pos, int n, cord L[])
+{
+	float sum(0);
+	for(int i=0;i<n;i++)
+	{
+		if(i!=pos)
+			sum+=anglecalc(L[pos],L[i]);
+	}
+	return sum;
+}
+
+void displayall(int n, cord L[])
+{
+	for (int i=0;i<n;i++)
+	{
+		cout<<(int(L[i].x*100))/float(100)<<" "<<(int(L[i].y*100))/float(100)<<" "<<(int(L[i].z*100))/float(100);
+      cout<<" "<<sqrt(L[i].x*L[i].x+L[i].y*L[i].y+L[i].z*L[i].z)<<endl;
+	}
+
+}
+
+void whichdirection(int pos, int n, cord L[])
+{
+	float max(-1);
+	int cas(0);
+	cordcalc(L[pos].ha,L[pos].va,L[pos]);
+  /*	if(sumofangles(pos,n,L)>max)
+	{
+		max=sumofangles(pos,n,L);
+		cas=0;
+	}  */
+	cout<<"INITIAL: "<<sumofangles(pos,n,L)<<endl;
+	cordcalc(L[pos].ha+pi/180,L[pos].va,L[pos]);
+	if(sumofangles(pos,n,L)>max)
+	{
+		max=sumofangles(pos,n,L);
+		cas=1;
+	}
+	cout<<"1 "<<sumofangles(pos,n,L)<<endl;
+	cordcalc(L[pos].ha-pi/180,L[pos].va,L[pos]);
+	if(sumofangles(pos,n,L)>max)
+	{
+		max=sumofangles(pos,n,L);
+		cas=2;
+	}
+	cout<<"2 "<<sumofangles(pos,n,L)<<endl;
+
+	cordcalc(L[pos].ha,L[pos].va+pi/180,L[pos]);
+	if(sumofangles(pos,n,L)>max)
+	{
+		max=sumofangles(pos,n,L);
+		cas=-1;
+	}
+	cout<<"-1 "<<sumofangles(pos,n,L)<<endl;
+
+	cordcalc(L[pos].ha,L[pos].va-pi/180,L[pos]);
+	if(sumofangles(pos,n,L)>max)
+	{
+		max=sumofangles(pos,n,L);
+		cas=-2;
+	}
+	cout<<"-2 "<<sumofangles(pos,n,L)<<endl;
+
+	cordcalc(L[pos].ha+pi/180,L[pos].va+pi/180,L[pos]);
+	if(sumofangles(pos,n,L)>max)
+	{
+		max=sumofangles(pos,n,L);
+		cas=3;
+	}
+	cout<<"3 "<<sumofangles(pos,n,L)<<endl;
+
+	cordcalc(L[pos].ha+pi/180,L[pos].va-pi/180,L[pos]);
+	if(sumofangles(pos,n,L)>max)
+	{
+		max=sumofangles(pos,n,L);
+		cas=4;
+	}
+	cout<<"4 "<<sumofangles(pos,n,L)<<endl;
+
+	cordcalc(L[pos].ha-pi/180,L[pos].va+pi/180,L[pos]);
+	if(sumofangles(pos,n,L)>max)
+	{
+		max=sumofangles(pos,n,L);
+		cas=5;
+	}
+	cout<<"5 "<<sumofangles(pos,n,L)<<endl;
+
+	cordcalc(L[pos].ha-pi/180,L[pos].va-pi/180,L[pos]);
+	if(sumofangles(pos,n,L)>max)
+	{
+		max=sumofangles(pos,n,L);
+		cas=6;
+	}
+	cout<<"6 "<<sumofangles(pos,n,L)<<endl;
+
+	cout<<"Initial angles: "<<L[pos].ha<<" "<<L[pos].va<<endl;
+	switch(cas)
+	{
+		case 0:
+			cordcalc(L[pos].ha,L[pos].va,L[pos]);
+			L[pos].ha=L[pos].ha;
+			L[pos].va=L[pos].va;
+		case 1:
+			cordcalc(L[pos].ha+pi/180,L[pos].va,L[pos]);
+			L[pos].ha=L[pos].ha+pi/180;
+			L[pos].va=L[pos].va;
+		case 2:
+			cordcalc(L[pos].ha-pi/180,L[pos].va,L[pos]);
+			L[pos].ha=L[pos].ha-pi/180;
+			L[pos].va=L[pos].va;
+		case -1:
+			cordcalc(L[pos].ha,L[pos].va+pi/180,L[pos]);
+			L[pos].ha=L[pos].ha;
+			L[pos].va=L[pos].va+pi/180;
+		case -2:
+			cordcalc(L[pos].ha,L[pos].va-pi/180,L[pos]);
+			L[pos].ha=L[pos].ha;
+			L[pos].va=L[pos].va-pi/180;
+		case 5:
+			cordcalc(L[pos].ha-pi/180,L[pos].va+pi/180,L[pos]);
+			L[pos].ha=L[pos].ha-pi/180;
+			L[pos].va=L[pos].va+pi/180;
+		case 6:
+			cordcalc(L[pos].ha-pi/180,L[pos].va-pi/180,L[pos]);
+			L[pos].ha=L[pos].ha-pi/180;
+			L[pos].va=L[pos].va-pi/180;
+		case 4:
+			cordcalc(L[pos].ha+pi/180,L[pos].va-pi/180,L[pos]);
+			L[pos].ha=L[pos].ha+pi/180;
+			L[pos].va=L[pos].va-pi/180;
+		case 3:
+      	cordcalc(L[pos].ha+pi/180,L[pos].va+pi/180,L[pos]);
+			L[pos].ha=L[pos].ha+pi/180;
+			L[pos].va=L[pos].va+pi/180;
+	}
+	cout<<"Case: "<<cas<<" New angles: "<<L[pos].ha<<" "<<L[pos].va<<endl;
+	cout<<"MAX: "<<max<<" "<<sumofangles(pos,n,L)<<endl<<endl;
+}
+
+
+void main()
+{
+	cord L[10];
+
+	L[0].x=L[0].y=L[0].z=1;
+	L[0].ha=pi/4;
+	L[0].va=0;
+
+	L[1].x=L[1].y=L[1].z=1;
+	L[1].ha=0;
+	L[1].va=0;
+
+	L[2].x=L[2].y=L[2].z=1;
+	L[2].ha=-pi/4;
+	L[2].va=0;
+
+	int test=1;
+	while(test)
+	{
+		getch();
+      clrscr();
+		for(int i=0;i<3;i++)
+			whichdirection(i,3,L);
+	  	displayall(3,L);
+	}
+}
